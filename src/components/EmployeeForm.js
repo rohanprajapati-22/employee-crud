@@ -1,25 +1,38 @@
-import { TextField } from "@mui/material";
+import { TextField, Button, Box, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 
 export default function EmployeeForm({ onSave, employee }) {
-  // formData stores all employee input values.
-  // setFormData updates those values.
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     name: "",
     email: "",
     department: "",
     designation: "",
     salary: "",
-  });
- 
-  // When a user types something, we need to capture that value.
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    if (employee) {
+      setFormData({
+        name: employee.name || "",
+        email: employee.email || "",
+        department: employee.department || "",
+        designation: employee.designation || "",
+        salary: employee.salary || "",
+      });
+    } else {
+      setFormData(initialFormData);
+    }
+  }, [employee]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -30,72 +43,82 @@ export default function EmployeeForm({ onSave, employee }) {
       ...formData,
     });
 
-    setFormData({
-      name: "",
-      email: "",
-      department: "",
-      designation: "",
-      salary: "",
-    });
+    setFormData(initialFormData);
   };
 
-  useEffect(() => {
-    if (employee) {
-      setFormData({
-        name: employee.name,
-        email: employee.email,
-        department: employee.department,
-        designation: employee.designation,
-        salary: employee.salary,
-      });
-    }
-  }, [employee]);
-  
   return (
-    <form onSubmit={handleSubmit}>
-      <TextField
-        label="Employee Name"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        fullWidth
-      />
+    <Box component="form" onSubmit={handleSubmit} sx={{ pt: 1 }}>
+      <Grid container spacing={2}>
 
-      <TextField
-        label="Email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        fullWidth
-      />
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField
+            label="Employee Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+        </Grid>
 
-      <TextField
-        label="Department"
-        name="department"
-        value={formData.department}
-        onChange={handleChange}
-        fullWidth
-      />
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField
+            label="Email Address"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+        </Grid>
 
-      <TextField
-        label="Designation"
-        name="designation"
-        value={formData.designation}
-        onChange={handleChange}
-        fullWidth
-      />
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField
+            label="Department"
+            name="department"
+            value={formData.department}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+        </Grid>
 
-      <TextField
-        label="Salary"
-        name="salary"
-        type="number"
-        value={formData.salary}
-        onChange={handleChange}
-        fullWidth
-      />
-      <button type="submit">
-        {employee ? "Update Employee" : "Save Employee"}
-      </button>
-    </form>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField
+            label="Designation"
+            name="designation"
+            value={formData.designation}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <TextField
+            label="Salary"
+            name="salary"
+            type="number"
+            value={formData.salary}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            size="large"
+          >
+            {employee ? "Update Employee" : "Save Employee"}
+          </Button>
+        </Grid>
+
+      </Grid>
+    </Box>
   );
 }
