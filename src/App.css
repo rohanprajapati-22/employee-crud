@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+
+body {
+  margin: 0;
+  background-color: #f5f6fa;
+  font-family: Arial, sans-serif;
+}
+
+.employee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
