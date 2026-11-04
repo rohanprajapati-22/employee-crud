@@ -39,7 +39,8 @@ export default function EmployeeForm({ onSave, employee }) {
     e.preventDefault();
 
     onSave({
-      id: employee ? employee.id : Date.now(),
+      // id: employee ? employee.id : Date.now(),
+      ...(employee ? { id: employee.id } : {}),
       ...formData,
     });
 
