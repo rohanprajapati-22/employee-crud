@@ -25,6 +25,7 @@ import {
   Chip,
   CircularProgress,
 } from "@mui/material";
+import Navbar from "./components/Navbar";
 
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -35,6 +36,8 @@ function App() {
   //   const savedEmployees = localStorage.getItem("employees");
   //   return savedEmployees ? JSON.parse(savedEmployees) : [];
   // });
+
+    
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -161,6 +164,9 @@ function App() {
   };
 
   return (
+     <>
+     <Navbar />
+       
     <Box className="employee-container">
       {/* Header */}
       <Box className="page-header">
@@ -350,8 +356,10 @@ function App() {
           </Button>
         </DialogActions>
       </Dialog>
+      
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />
     </Box>
+    </>
   );
 }
 
