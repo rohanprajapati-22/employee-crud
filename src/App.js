@@ -42,6 +42,8 @@ function App() {
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [saving, setSaving] = useState(null);
+  const [deleting, setDeleting] = useState(null);
 
   // useEffect(() => {
   //   localStorage.setItem("employees", JSON.stringify(employees));
@@ -53,6 +55,7 @@ function App() {
 
   const handleSaveEmployee = async (employee) => {
     try {
+      setSaving(true);
       if (selectedEmployee) {
         // Update existing employee
         await api.put(`/Employees/${selectedEmployee.id}`, employee);
@@ -72,6 +75,8 @@ function App() {
     } catch (error) {
       console.error("Employee save error:", error);
       toastService.error("Failed to save employee!");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -118,6 +123,7 @@ function App() {
     if (!employeeToDelete) return;
 
     try {
+      setDeleting(true);
       await api.delete(`/Employees/${employeeToDelete.id}`);
 
       toastService.success("Employee deleted successfully!");
@@ -131,6 +137,8 @@ function App() {
       console.error("Error deleting employee:", error);
 
       toastService.error("Something went wrong!");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -298,6 +306,7 @@ function App() {
           <EmployeeForm
             onSave={handleSaveEmployee}
             employee={selectedEmployee}
+            saving={saving}
           />
         </DialogContent>
 
@@ -328,8 +337,16 @@ function App() {
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
 
-          <Button onClick={confirmDelete} color="error" variant="contained">
-            Delete
+          <Button
+            color="error"
+            variant="contained"
+            onClick={confirmDelete}
+            disabled={deleting}
+            startIcon={
+              deleting ? <CircularProgress size={18} color="inherit" /> : null
+            }
+          >
+            {deleting ? "Deleting..." : "Delete"}
           </Button>
         </DialogActions>
       </Dialog>

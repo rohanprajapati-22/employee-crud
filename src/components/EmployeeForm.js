@@ -1,7 +1,7 @@
-import { TextField, Button, Box, Grid } from "@mui/material";
+import { TextField, Button, Box, Grid, CircularProgress } from "@mui/material";
 import { useState, useEffect } from "react";
 
-export default function EmployeeForm({ onSave, employee }) {
+export default function EmployeeForm({ onSave, employee, saving }) {
   const initialFormData = {
     name: "",
     email: "",
@@ -50,7 +50,6 @@ export default function EmployeeForm({ onSave, employee }) {
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ pt: 1 }}>
       <Grid container spacing={2}>
-
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Employee Name"
@@ -109,16 +108,30 @@ export default function EmployeeForm({ onSave, employee }) {
         </Grid>
 
         <Grid size={{ xs: 12 }}>
-          <Button
+          {/* <Button
             type="submit"
             variant="contained"
             fullWidth
             size="large"
           >
             {employee ? "Update Employee" : "Save Employee"}
+          </Button> */}
+
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={saving}
+            startIcon={
+              saving ? <CircularProgress size={18} color="inherit" /> : null
+            }
+          >
+            {saving
+              ? "Saving..."
+              : employee
+                ? "Update Employee"
+                : "Save Employee"}
           </Button>
         </Grid>
-
       </Grid>
     </Box>
   );
